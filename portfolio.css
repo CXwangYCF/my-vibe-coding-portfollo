@@ -1,17 +1,19 @@
 :root {
-  --bg: #eef3ea;
-  --panel: rgba(248, 249, 243, 0.74);
-  --panel-strong: rgba(252, 252, 248, 0.86);
-  --matcha: #7e9578;
-  --matcha-deep: #5c7057;
-  --cream: #f4efe3;
-  --cream-deep: #ddd4bd;
-  --choco: #4a3a2e;
-  --choco-soft: #765c49;
-  --ink: #2f2923;
-  --muted: #6b655d;
-  --line: rgba(74, 58, 46, 0.12);
-  --shadow: 0 18px 48px rgba(58, 66, 49, 0.1);
+  --bg: #edf0e4;
+  --panel: rgba(248, 247, 239, 0.74);
+  --panel-strong: rgba(251, 250, 244, 0.88);
+  --matcha: #7f9672;
+  --matcha-deep: #5a7053;
+  --leaf: #99aa88;
+  --cream: #f3ecdf;
+  --cream-deep: #d9ceb7;
+  --earth: #8f755e;
+  --choco: #574336;
+  --choco-soft: #7b6552;
+  --ink: #312a24;
+  --muted: #6d655b;
+  --line: rgba(87, 67, 54, 0.12);
+  --shadow: 0 18px 48px rgba(72, 80, 58, 0.1);
   --radius-xl: 36px;
   --radius-lg: 26px;
   --radius-md: 18px;
@@ -29,7 +31,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  background: linear-gradient(180deg, #f4f8f1 0%, var(--bg) 100%);
+  background: linear-gradient(180deg, #f7f5ee 0%, var(--bg) 100%);
   font-family: "Inter", "Noto Sans SC", sans-serif;
 }
 
@@ -54,8 +56,8 @@ body {
   width: 42vw;
   height: 46vh;
   background:
-    linear-gradient(145deg, rgba(126, 149, 120, 0.28), rgba(244, 239, 227, 0.08)),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 520'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2398af90'/%3E%3Cstop offset='1' stop-color='%23eff4ea'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='520' rx='42' fill='url(%23g)'/%3E%3Cpath d='M0 360 C120 290 210 300 320 340 C420 378 500 378 610 332 C676 304 732 270 800 258 L800 520 L0 520 Z' fill='%23dce6d6'/%3E%3Cpath d='M0 396 C110 354 200 352 286 382 C408 424 520 420 628 372 C692 344 744 338 800 350 L800 520 L0 520 Z' fill='%23c2d0bb'/%3E%3Ccircle cx='624' cy='120' r='60' fill='%23f2eddf' fill-opacity='0.9'/%3E%3C/svg%3E");
+    linear-gradient(145deg, rgba(127, 150, 114, 0.2), rgba(243, 236, 223, 0.04)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 560'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23f7f6ef'/%3E%3Cstop offset='1' stop-color='%23e6eddc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='900' height='560' rx='46' fill='url(%23sky)'/%3E%3Cpath d='M0 334 C132 270 248 280 370 328 C474 368 594 378 722 324 C790 296 842 264 900 246 L900 560 L0 560 Z' fill='%23d8e2ce'/%3E%3Cpath d='M0 396 C134 360 252 358 368 392 C502 430 638 432 772 384 C820 366 862 352 900 352 L900 560 L0 560 Z' fill='%23b9caaa'/%3E%3Cpath d='M76 324 C116 292 146 286 178 316' stroke='%23879d79' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3Cpath d='M164 306 C200 276 232 272 270 304' stroke='%238ea27f' stroke-width='8' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='704' cy='122' r='64' fill='%23f3ebd9' fill-opacity='0.96'/%3E%3C/svg%3E");
   background-size: cover;
   box-shadow: var(--shadow);
 }
@@ -66,8 +68,8 @@ body {
   width: 34vw;
   height: 38vh;
   background:
-    linear-gradient(145deg, rgba(244, 239, 227, 0.16), rgba(126, 149, 120, 0.14)),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 480'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23f8faf5'/%3E%3Cstop offset='1' stop-color='%23e5eee0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='640' height='480' rx='40' fill='url(%23sky)'/%3E%3Cpath d='M0 292 C90 252 184 252 274 290 C352 322 430 330 518 286 C560 266 598 248 640 238 L640 480 L0 480 Z' fill='%23d2dfcb'/%3E%3Cpath d='M0 342 C98 316 192 312 282 338 C398 372 512 372 640 320 L640 480 L0 480 Z' fill='%23b8c9b1'/%3E%3C/svg%3E");
+    linear-gradient(145deg, rgba(243, 236, 223, 0.14), rgba(127, 150, 114, 0.1)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 500'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23faf9f4'/%3E%3Cstop offset='1' stop-color='%23e8efe1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='700' height='500' rx='40' fill='url(%23g)'/%3E%3Cpath d='M0 286 C102 246 190 244 280 280 C364 314 448 320 540 282 C596 258 644 240 700 232 L700 500 L0 500 Z' fill='%23d3dec9'/%3E%3Cpath d='M0 340 C100 316 202 314 300 344 C408 378 520 378 640 334 C662 326 682 320 700 320 L700 500 L0 500 Z' fill='%23b8c9ac'/%3E%3Cpath d='M492 280 C510 234 524 210 548 190 C566 174 594 166 620 176' stroke='%23879b79' stroke-width='8' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
   background-size: cover;
   box-shadow: var(--shadow);
 }
@@ -83,7 +85,7 @@ body {
   top: 18%;
   width: 280px;
   height: 280px;
-  background: rgba(126, 149, 120, 0.12);
+  background: rgba(127, 150, 114, 0.12);
 }
 
 .glow-two {
@@ -91,7 +93,7 @@ body {
   top: 28%;
   width: 340px;
   height: 340px;
-  background: rgba(244, 239, 227, 0.32);
+  background: rgba(244, 236, 223, 0.34);
 }
 
 .site-shell {
@@ -257,10 +259,13 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 46px;
-  padding: 0 20px;
+  gap: 10px;
+  padding: 0 22px;
   border-radius: 999px;
   font-weight: 700;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .button:hover {
@@ -269,14 +274,26 @@ body {
 
 .button.primary {
   color: #fbfaf5;
-  background: var(--choco);
-  box-shadow: 0 10px 22px rgba(74, 58, 46, 0.18);
+  background: linear-gradient(145deg, var(--matcha-deep), var(--choco));
+  box-shadow: 0 12px 24px rgba(74, 58, 46, 0.18);
+}
+
+.button.primary::after {
+  content: "\2197";
+  font-size: 14px;
+  opacity: 0.9;
 }
 
 .button.secondary {
   color: var(--choco);
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(74, 58, 46, 0.12);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(243, 236, 223, 0.5));
+  border: 1px solid rgba(87, 67, 54, 0.12);
+}
+
+.button.secondary::after {
+  content: "\2192";
+  font-size: 14px;
+  opacity: 0.75;
 }
 
 .hero-stage {
@@ -284,8 +301,8 @@ body {
   min-height: 340px;
   border-radius: 28px;
   background:
-    linear-gradient(180deg, rgba(252, 252, 248, 0.42), rgba(244, 239, 227, 0.24)),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 700'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f6f8f2'/%3E%3Cstop offset='1' stop-color='%23dbe6d6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='900' height='700' rx='48' fill='url(%23g)'/%3E%3Cpath d='M0 458 C130 378 230 378 334 430 C434 480 526 494 634 442 C744 388 810 324 900 304 L900 700 L0 700 Z' fill='%23d7e2d0'/%3E%3Cpath d='M0 520 C130 488 248 484 358 520 C486 562 606 560 726 518 C788 496 844 486 900 490 L900 700 L0 700 Z' fill='%23bfd0b8'/%3E%3Ccircle cx='646' cy='132' r='76' fill='%23f4efe3' fill-opacity='0.96'/%3E%3C/svg%3E");
+    linear-gradient(180deg, rgba(252, 252, 248, 0.34), rgba(243, 236, 223, 0.2)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 700'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f9f8f2'/%3E%3Cstop offset='1' stop-color='%23dbe5d3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='900' height='700' rx='48' fill='url(%23g)'/%3E%3Cpath d='M0 444 C126 374 234 378 340 430 C450 486 560 492 676 432 C760 388 832 332 900 304 L900 700 L0 700 Z' fill='%23d7e1cd'/%3E%3Cpath d='M0 530 C130 500 246 494 360 526 C474 560 600 562 742 512 C804 490 854 478 900 476 L900 700 L0 700 Z' fill='%23b9c8ad'/%3E%3Cpath d='M140 430 C172 380 192 352 224 330 C250 312 282 310 306 324' stroke='%23879b79' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3Cpath d='M238 422 C266 374 286 348 314 330 C338 316 364 314 390 326' stroke='%2390a382' stroke-width='8' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='658' cy='140' r='74' fill='%23f3ebda' fill-opacity='0.96'/%3E%3C/svg%3E");
   background-size: cover;
   overflow: hidden;
 }
