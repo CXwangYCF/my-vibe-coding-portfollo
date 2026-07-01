@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ReqPilot 工作台</title>
-  <meta name="description" content="ReqPilot MVP 工作台，支持行业材料分析、PRD 草稿和汇报提纲生成。" />
+  <title>ReqPilot | 工作台</title>
+  <meta name="description" content="ReqPilot 交互式工作台，支持材料输入、需求分析、PRD 草稿和汇报提纲生成。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="./styles.css" />
@@ -35,14 +35,35 @@
       <section class="page-hero">
         <div>
           <p class="section-kicker">Workspace</p>
-          <h1>交互式 MVP 工作台</h1>
-          <p class="page-summary">在这里体验上传材料、自动拆解需求、生成 PRD 草稿和汇报提纲的完整流程。</p>
+          <h1>从材料输入到方案输出的交互工作台</h1>
+          <p class="page-summary">
+            先选择一个示例或粘贴你的行业材料，系统会自动完成需求拆解，
+            再生成 PRD 草稿、汇报提纲和资源计划。
+          </p>
         </div>
         <div class="sample-switches">
-          <button class="sample-btn" data-sample="police">公安警情复盘</button>
-          <button class="sample-btn" data-sample="fire">消防巡检项目</button>
-          <button class="sample-btn" data-sample="gov">政企招标材料</button>
+          <button class="sample-btn" data-sample="police">公安复盘</button>
+          <button class="sample-btn" data-sample="fire">消防巡检</button>
+          <button class="sample-btn" data-sample="gov">政企招标</button>
         </div>
+      </section>
+
+      <section class="guide-strip">
+        <article class="guide-card">
+          <span>Step 1</span>
+          <strong>输入材料</strong>
+          <p>粘贴文本，或用样例快速体验。</p>
+        </article>
+        <article class="guide-card">
+          <span>Step 2</span>
+          <strong>开始分析</strong>
+          <p>输出角色、痛点、功能与待澄清问题。</p>
+        </article>
+        <article class="guide-card">
+          <span>Step 3</span>
+          <strong>整理结果</strong>
+          <p>切换 PRD、提纲与指标页继续编辑。</p>
+        </article>
       </section>
 
       <section class="summary-strip">
@@ -51,11 +72,11 @@
           <strong id="current-sample-label">公安警情复盘</strong>
         </article>
         <article class="mini-stat">
-          <span>文档字数</span>
+          <span>材料字数</span>
           <strong id="doc-char-count">0</strong>
         </article>
         <article class="mini-stat">
-          <span>需求完整度</span>
+          <span>完整度</span>
           <strong id="readiness-score">--</strong>
         </article>
         <article class="mini-stat">
@@ -99,10 +120,10 @@
             </div>
 
             <div class="field-group">
-              <label for="model-mode">DeepSeek 分析模式</label>
+              <label for="model-mode">DeepSeek 模式</label>
               <select id="model-mode">
-                <option value="flash">DeepSeek V4 Flash · 低成本默认</option>
-                <option value="pro">DeepSeek V4 Pro · 高质量分析</option>
+                <option value="flash">DeepSeek Flash · 默认演示模式</option>
+                <option value="pro">DeepSeek Pro · 复杂文档模式</option>
               </select>
             </div>
 
@@ -121,19 +142,19 @@
 
             <div class="field-group">
               <label for="document-input">粘贴行业材料</label>
-              <textarea id="document-input" spellcheck="false"></textarea>
+              <textarea id="document-input" spellcheck="false" placeholder="在这里粘贴会议纪要、招标需求、客户材料或现场记录"></textarea>
             </div>
 
             <div class="quick-actions">
               <button class="button primary" id="analyze-btn">开始分析</button>
-              <button class="button ghost" id="fill-demo">填充样例文本</button>
+              <button class="button ghost" id="fill-demo">填充样例</button>
               <button class="button ghost" id="save-draft-btn">保存草稿</button>
               <button class="button ghost" id="restore-draft-btn">恢复草稿</button>
-              <button class="button ghost" id="clear-btn">清空</button>
+              <button class="button ghost" id="clear-btn">清空输入</button>
             </div>
 
             <div class="upload-hint">
-              已接入 DeepSeek 调用入口。若未填写 API Key，页面会自动回退到本地演示分析模式。
+              如果没有填写 API Key，页面会自动回退到本地演示分析模式，适合用于作品展示。
             </div>
           </section>
 
@@ -159,11 +180,11 @@
                   <span>AI 结论</span>
                   <strong id="summary-title">等待分析</strong>
                 </div>
-                <small id="summary-subtitle">自动提炼角色、痛点、功能与风险。</small>
+                <small id="summary-subtitle">识别角色、痛点、功能建议与待确认问题</small>
               </div>
 
               <div class="model-hint" id="model-hint">
-                当前策略：默认使用 DeepSeek V4 Flash，适合需求拆解、PRD 初稿和汇报提纲生成。
+                当前默认使用低成本模式，更适合作品展示和快速体验整体流程。
               </div>
 
               <div class="card-grid" id="analysis-cards"></div>
@@ -183,7 +204,7 @@
                 <article class="ops-card">
                   <span>北极星指标</span>
                   <strong id="north-star">导出可用方案完成率</strong>
-                  <p>衡量从上传文档到形成可执行成果的闭环效率。</p>
+                  <p>衡量从材料输入到形成可执行输出的完整度。</p>
                 </article>
                 <article class="ops-card">
                   <span>核心业务指标</span>
