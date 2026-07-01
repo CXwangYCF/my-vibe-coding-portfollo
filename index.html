@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="./portfolio.css" />
@@ -35,7 +35,7 @@
       </div>
       <div class="topnav">
         <a href="#projects">作品</a>
-        <a href="#focus">能力</a>
+        <a href="#about">能力</a>
         <a href="#contact">联系</a>
       </div>
     </nav>
@@ -43,16 +43,16 @@
     <header class="hero">
       <section class="hero-panel">
         <div class="hero-copy">
-          <p class="eyebrow">Selected Works</p>
-          <h1>把 AI 能力做成清晰、可演示、可讲述的产品页面。</h1>
+          <p class="eyebrow">Portfolio</p>
+          <h1>AI 产品作品集</h1>
           <p class="hero-summary">
-            我关注 AI 产品规划、需求落地与交互表达，倾向从真实场景出发，
-            用页面去组织用户问题、功能结构、指标假设与最小可行原型。
+            聚焦行业场景与教育场景，用网页形式展示产品思路、交互结构、
+            功能拆解与最小可行原型。
           </p>
 
           <div class="hero-actions">
             <a class="button primary" href="#projects">查看作品</a>
-            <a class="button secondary" href="../reqpilot-mvp/index.html">打开 ReqPilot</a>
+            <a class="button secondary" href="../reqpilot-mvp/index.html">查看行业文档助手</a>
           </div>
         </div>
 
@@ -66,33 +66,11 @@
             <span>研究方向</span>
             <strong>大模型安全 / 智能体安全 / 计算机视觉</strong>
           </div>
-          <div class="floating-card mini-card">
-            <span>展示方式</span>
-            <strong>可访问页面 · 清晰结构 · 适合面试展示</strong>
-          </div>
         </div>
       </section>
     </header>
 
     <main>
-      <section class="focus-strip" id="focus">
-        <article class="focus-card">
-          <span class="focus-index">01</span>
-          <strong>场景导向</strong>
-          <p>先定义用户、任务与使用环境，再反推页面结构和功能优先级。</p>
-        </article>
-        <article class="focus-card">
-          <span class="focus-index">02</span>
-          <strong>MVP 意识</strong>
-          <p>优先跑通输入、分析、输出闭环，再逐步补 API、导出与协作能力。</p>
-        </article>
-        <article class="focus-card">
-          <span class="focus-index">03</span>
-          <strong>展示表达</strong>
-          <p>页面不仅能用，也能讲清楚产品定位、核心价值和后续迭代方向。</p>
-        </article>
-      </section>
-
       <section id="projects" class="projects">
         <div class="section-heading">
           <div>
@@ -106,7 +84,7 @@
           <article class="project-card featured">
             <div class="project-copy">
               <p class="project-kicker">Project 01</p>
-              <h3>ReqPilot 行业文档理解与方案生成助手</h3>
+              <h3>行业文档理解与方案生成助手</h3>
               <p>
                 面向公安、消防、政企等材料密集型场景，把非结构化文档整理为需求拆解、
                 PRD 草稿、汇报提纲与资源计划。这个作品更偏 AI 产品经理视角，
@@ -124,22 +102,8 @@
                 <span>Interactive MVP</span>
               </div>
               <div class="project-actions">
-                <a class="button primary" href="../reqpilot-mvp/index.html">项目首页</a>
-                <a class="button secondary" href="../reqpilot-mvp/workspace.html">进入工作台</a>
-              </div>
-            </div>
-
-            <div class="project-visual">
-              <div class="visual-browser">
-                <div class="visual-dots"><span></span><span></span><span></span></div>
-                <div class="visual-body">
-                  <div class="visual-hero"></div>
-                  <div class="visual-grid">
-                    <div class="visual-block"></div>
-                    <div class="visual-block light"></div>
-                  </div>
-                  <div class="visual-caption">materials → analysis → output</div>
-                </div>
+                <a class="button primary" href="../reqpilot-mvp/index.html">查看项目</a>
+                <a class="button secondary" href="../reqpilot-mvp/workspace.html">进入演示页</a>
               </div>
             </div>
           </article>
@@ -172,7 +136,7 @@
         </div>
       </section>
 
-      <section class="about-panel">
+      <section id="about" class="about-panel">
         <div class="section-heading">
           <div>
             <p class="section-kicker">About</p>
