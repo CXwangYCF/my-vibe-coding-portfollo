@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReqPilot 产品方案</title>
+  <meta name="description" content="ReqPilot 的产品定位、目标用户、功能设计、指标与模型选型。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">R</div>
+        <div>
+          <p>ReqPilot</p>
+          <span>行业文档理解与方案生成助手</span>
+        </div>
+      </div>
+      <nav class="topnav">
+        <a href="./index.html">首页</a>
+        <a href="./workspace.html">工作台</a>
+        <a class="is-current" href="./product.html">产品方案</a>
+        <a href="./roadmap.html">上线计划</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div>
+          <p class="section-kicker">Product</p>
+          <h1>需求、功能、指标与模型选型</h1>
+          <p class="page-summary">把这个 MVP 当成一个真实 AI 产品来讲，而不是一个简单的页面作品。</p>
+        </div>
+      </section>
+
+      <section class="bullet-grid">
+        <article class="section-card">
+          <div class="logic-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4M6 19c0-2.3 2.7-4 6-4s6 1.7 6 4"/></svg>
+          </div>
+          <strong>目标用户</strong>
+          <p>AI 产品经理、售前顾问、项目助理、研发负责人。</p>
+        </article>
+        <article class="section-card">
+          <div class="logic-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4M12 17h.01M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9Z"/></svg>
+          </div>
+          <strong>核心痛点</strong>
+          <p>材料长、需求散、口径不统一，人工整理与跨团队对齐成本高。</p>
+        </article>
+        <article class="section-card">
+          <div class="logic-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14h4l2-4 4 8 2-4h4"/></svg>
+          </div>
+          <strong>核心价值</strong>
+          <p>把“读材料 → 拆需求 → 出文档 → 做汇报”做成一个标准化工作台。</p>
+        </article>
+      </section>
+
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Feature Scope</p>
+            <h2>MVP 功能范围</h2>
+          </div>
+        </div>
+        <div class="bullet-grid">
+          <article class="section-card">
+            <strong>文档上传与解析</strong>
+            <p>支持粘贴或上传行业材料，完成文本抽取与整理。</p>
+          </article>
+          <article class="section-card">
+            <strong>结构化需求拆解</strong>
+            <p>识别角色、目标、痛点、功能、风险与待确认问题。</p>
+          </article>
+          <article class="section-card">
+            <strong>PRD 草稿生成</strong>
+            <p>自动生成背景、目标、用户、流程与验收要点。</p>
+          </article>
+          <article class="section-card">
+            <strong>汇报提纲输出</strong>
+            <p>生成 3 分钟汇报稿和客户沟通提纲。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Metrics & Stack</p>
+            <h2>指标与技术决策</h2>
+          </div>
+        </div>
+
+        <div class="bullet-grid">
+          <article class="section-card">
+            <strong>北极星指标</strong>
+            <p>上传文档后，导出可用方案的完成率。</p>
+          </article>
+          <article class="section-card">
+            <strong>核心指标</strong>
+            <p>PRD 导出率、汇报导出率、人工修改率、平均处理时长。</p>
+          </article>
+          <article class="section-card">
+            <strong>资源计划</strong>
+            <p>前端/全栈 1 人，AI 工程 1 人，产品 1 人。</p>
+          </article>
+          <article class="section-card">
+            <strong>模型选型</strong>
+            <p>主路线采用 DeepSeek：默认走 V4 Flash，复杂材料或高质量模式升级到 V4 Pro。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">DeepSeek Strategy</p>
+            <h2>DeepSeek 选型策略</h2>
+          </div>
+        </div>
+
+        <div class="bullet-grid">
+          <article class="section-card">
+            <strong>默认模型</strong>
+            <p>DeepSeek V4 Flash。适合高频需求拆解、PRD 初稿和汇报提纲，优先控制成本。</p>
+          </article>
+          <article class="section-card">
+            <strong>高质量模式</strong>
+            <p>DeepSeek V4 Pro。适合复杂招标书、关键汇报稿和正式方案整理。</p>
+          </article>
+          <article class="section-card">
+            <strong>文档入口</strong>
+            <p>扫描件和图片材料继续由 PaddleOCR 兜底，再把文本送入 DeepSeek 分析。</p>
+          </article>
+          <article class="section-card">
+            <strong>产品策略</strong>
+            <p>先全部默认走 Flash，只有在复杂场景或用户主动切换时才升级到 Pro。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cta-band">
+        <div>
+          <p class="section-kicker">Demo</p>
+          <h3>想看这些设计如何落到实际页面里，就去工作台页面。</h3>
+        </div>
+        <div class="hero-actions">
+          <a class="button primary" href="./workspace.html">进入工作台</a>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

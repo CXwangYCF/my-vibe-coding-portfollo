@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="面向初中生的数学错题诊断网页，帮助学生定位错因、重新理解知识点，并通过同类题巩固掌握。"
+    />
+    <title>错题诊断助手 | 初中数学</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <nav class="topbar" aria-label="主导航">
+      <a class="brand" href="#home" aria-label="错题诊断助手首页">
+        <span class="brand-mark">M</span>
+        <span>错题诊断助手</span>
+      </a>
+      <div class="nav-links">
+        <a href="#diagnose">开始诊断</a>
+        <a href="#examples">例题库</a>
+        <a href="#notebook">错题本</a>
+        <a href="#guide">使用方法</a>
+      </div>
+    </nav>
+
+    <header class="hero" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow">初中数学错题复盘</p>
+        <h1>错题不是只改答案，而是找到下一次不会再错的原因</h1>
+        <p class="hero-subtitle">
+          输入题目、你的做法和答案，系统会判断知识点、定位错因、给出分层讲解，并安排一道同类题帮你确认是否真的掌握。
+        </p>
+        <div class="hero-actions">
+          <a class="primary-link" href="#diagnose">现在分析一道题</a>
+          <a class="secondary-link" href="#examples">先看示例</a>
+        </div>
+      </div>
+      <div class="hero-board" aria-label="产品能力概览">
+        <div class="board-row">
+          <span>常见错因</span>
+          <strong>概念、公式、计算、审题、步骤</strong>
+        </div>
+        <div class="board-row">
+          <span>复盘方式</span>
+          <strong>先定位错因，再练会同类题</strong>
+        </div>
+        <div class="board-row">
+          <span>适合内容</span>
+          <strong>方程、函数、几何、概率统计</strong>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="insight-strip" aria-label="产品特点">
+        <div>
+          <strong id="totalDiagnoses">0</strong>
+          <span>次本地诊断记录</span>
+        </div>
+        <div>
+          <strong id="topErrorType">暂无</strong>
+          <span>最常见错因</span>
+        </div>
+        <div>
+          <strong id="lastReview">未开始</strong>
+          <span>最近复盘</span>
+        </div>
+      </section>
+
+      <section class="app-shell" id="diagnose">
+        <section class="workspace-panel" aria-labelledby="input-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">开始诊断</p>
+              <h2 id="input-title">把你的错题发给我</h2>
+            </div>
+            <button class="text-button" id="clearBtn" type="button">重新填写</button>
+          </div>
+
+          <div class="stepper" aria-label="诊断步骤">
+            <span class="active">1 写题目</span>
+            <span>2 找错因</span>
+            <span>3 练同类题</span>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              <span>年级</span>
+              <select id="grade">
+                <option value="七年级">七年级</option>
+                <option value="八年级" selected>八年级</option>
+                <option value="九年级">九年级</option>
+              </select>
+            </label>
+
+            <label>
+              <span>大概是哪类题</span>
+              <select id="module">
+                <option value="auto" selected>我不确定，帮我判断</option>
+                <option value="方程与不等式">方程与不等式</option>
+                <option value="函数">函数</option>
+                <option value="几何">几何</option>
+                <option value="概率统计">概率统计</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="field-block">
+            <span>题目</span>
+            <textarea
+              id="problem"
+              rows="5"
+              placeholder="把题目完整写在这里，例如：已知一次函数 y=kx+b 经过点 (0,2) 和 (3,8)，求函数解析式。"
+            ></textarea>
+          </label>
+
+          <label class="field-block">
+            <span>我的做法</span>
+            <textarea
+              id="process"
+              rows="6"
+              placeholder="写下你当时的解题步骤。就算不完整也没关系，越接近真实做法越容易找到原因。"
+            ></textarea>
+          </label>
+
+          <div class="form-grid">
+            <label>
+              <span>我的答案</span>
+              <input id="studentAnswer" type="text" placeholder="例如：y=3x+2" />
+            </label>
+
+            <label>
+              <span>正确答案，知道就填</span>
+              <input id="correctAnswer" type="text" placeholder="例如：y=2x+2" />
+            </label>
+          </div>
+
+          <label class="field-block">
+            <span>我最想弄懂的问题</span>
+            <input id="goal" type="text" placeholder="例如：我不知道为什么不能把 2 当成 k。" />
+          </label>
+
+          <div class="readiness" aria-label="填写完整度">
+            <div class="readiness-copy">
+              <span>信息完整度</span>
+              <strong id="readinessText">还没有开始</strong>
+            </div>
+            <div class="readiness-bar">
+              <span id="readinessBar"></span>
+            </div>
+          </div>
+
+          <button class="primary-button" id="diagnoseBtn" type="button">帮我分析错因</button>
+        </section>
+
+        <section class="result-panel" aria-labelledby="result-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">诊断结果</p>
+              <h2 id="result-title">先看你卡在哪里</h2>
+            </div>
+            <div class="status-pill" id="statusPill">等待输入</div>
+          </div>
+
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">?</div>
+            <h3>错题分析会出现在这里</h3>
+            <p>我会按“错因 -> 正确思路 -> 同类练习”的顺序帮你复盘，不会一上来只甩答案。</p>
+          </div>
+
+          <div class="diagnosis hidden" id="diagnosis">
+            <div class="answer-card" id="answerCard">
+              <span class="label">这道题主要卡在</span>
+              <strong id="oneLine"></strong>
+              <p id="diagnosisSummary"></p>
+            </div>
+
+            <div class="summary-grid">
+              <div>
+                <span class="label">考查知识点</span>
+                <strong id="knowledgePoint">-</strong>
+              </div>
+              <div>
+                <span class="label">题目类型</span>
+                <strong id="moduleResult">-</strong>
+              </div>
+              <div>
+                <span class="label">答案对比</span>
+                <strong id="answerStatus">-</strong>
+              </div>
+            </div>
+
+            <div class="result-block">
+              <h3>可能的错因</h3>
+              <div class="tag-list" id="errorTags"></div>
+            </div>
+
+            <div class="result-block">
+              <h3>具体错在哪里</h3>
+              <p id="errorLocation"></p>
+            </div>
+
+            <div class="result-block">
+              <h3>怎么重新学会</h3>
+              <div class="level-list" id="levelList"></div>
+            </div>
+
+            <div class="result-block">
+              <h3>接下来 3 天怎么复习</h3>
+              <div class="plan-list" id="planList"></div>
+            </div>
+
+            <div class="result-block">
+              <h3>下次遇到这类题</h3>
+              <ul id="strategyList"></ul>
+            </div>
+
+            <div class="practice-box">
+              <div>
+                <p class="eyebrow">马上练一题</p>
+                <h3>同类巩固题</h3>
+              </div>
+              <p id="practiceQuestion"></p>
+              <div class="practice-check">
+                <input id="practiceAnswer" type="text" placeholder="写下你的答案" />
+                <button class="secondary-button" id="checkPracticeBtn" type="button">检查一下</button>
+              </div>
+              <p class="practice-feedback" id="practiceFeedback"></p>
+            </div>
+
+            <div class="report-actions">
+              <button class="secondary-button" id="copyReportBtn" type="button">复制复盘报告</button>
+              <button class="secondary-button" id="downloadReportBtn" type="button">下载报告</button>
+              <button class="text-button" id="saveAgainBtn" type="button">保存到错题本</button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="content-section" id="examples">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">例题库</p>
+            <h2>不知道怎么填，可以先用这些题试试</h2>
+          </div>
+        </div>
+        <div class="example-grid" id="exampleGrid"></div>
+      </section>
+
+      <section class="content-section" id="notebook">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">错题本</p>
+            <h2>最近复盘过的错题</h2>
+          </div>
+          <button class="text-button" id="clearHistoryBtn" type="button">清空记录</button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+      </section>
+
+      <section class="guide-grid" id="guide">
+        <article>
+          <p class="eyebrow">使用方法</p>
+          <h2>一次错题复盘，建议这样做</h2>
+          <ol>
+            <li>先把题目完整写下来，不要只写最后一句。</li>
+            <li>把自己的真实做法写出来，错的步骤也要保留。</li>
+            <li>看完诊断后，先重做同类题，再看答案。</li>
+            <li>第二天再回到错题本复习一次，检查是否真的会了。</li>
+          </ol>
+        </article>
+        <article>
+          <p class="eyebrow">网页部署</p>
+          <h2>适合直接部署到 GitHub Pages</h2>
+          <p>
+            这个网页不需要后端和数据库，上传到 GitHub 仓库后，开启 Pages 就能访问。
+            诊断记录会保存在浏览器本地，不会上传用户的题目和答案。
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>错题诊断助手</span>
+      <span>本地运行，无需登录，适合初中数学错题复盘。</span>
+    </footer>
+  </body>
+</html>

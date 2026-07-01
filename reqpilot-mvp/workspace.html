@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReqPilot 工作台</title>
+  <meta name="description" content="ReqPilot MVP 工作台，支持行业材料分析、PRD 草稿和汇报提纲生成。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">R</div>
+        <div>
+          <p>ReqPilot</p>
+          <span>行业文档理解与方案生成助手</span>
+        </div>
+      </div>
+      <nav class="topnav">
+        <a href="./index.html">首页</a>
+        <a class="is-current" href="./workspace.html">工作台</a>
+        <a href="./product.html">产品方案</a>
+        <a href="./roadmap.html">上线计划</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div>
+          <p class="section-kicker">Workspace</p>
+          <h1>交互式 MVP 工作台</h1>
+          <p class="page-summary">在这里体验上传材料、自动拆解需求、生成 PRD 草稿和汇报提纲的完整流程。</p>
+        </div>
+        <div class="sample-switches">
+          <button class="sample-btn" data-sample="police">公安警情复盘</button>
+          <button class="sample-btn" data-sample="fire">消防巡检项目</button>
+          <button class="sample-btn" data-sample="gov">政企招标材料</button>
+        </div>
+      </section>
+
+      <section class="summary-strip">
+        <article class="mini-stat">
+          <span>当前样例</span>
+          <strong id="current-sample-label">公安警情复盘</strong>
+        </article>
+        <article class="mini-stat">
+          <span>文档字数</span>
+          <strong id="doc-char-count">0</strong>
+        </article>
+        <article class="mini-stat">
+          <span>需求完整度</span>
+          <strong id="readiness-score">--</strong>
+        </article>
+        <article class="mini-stat">
+          <span>分析模型</span>
+          <strong id="current-model-label">DeepSeek V4 Flash</strong>
+        </article>
+        <article class="mini-stat">
+          <span>草稿状态</span>
+          <strong id="draft-status">未保存</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <div class="workspace-grid">
+          <section class="input-panel">
+            <div class="panel-toolbar">
+              <strong>输入材料</strong>
+              <label class="upload-button">
+                <input id="file-input" type="file" accept=".txt,.md,.doc,.docx,.pdf" />
+                上传文件
+              </label>
+            </div>
+
+            <div class="field-group">
+              <label for="doc-type">材料类型</label>
+              <select id="doc-type">
+                <option>会议纪要</option>
+                <option>客户需求</option>
+                <option>招标书</option>
+                <option>现场记录</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="goal-type">输出目标</label>
+              <select id="goal-type">
+                <option>需求摘要 + PRD 草稿</option>
+                <option>客户汇报提纲</option>
+                <option>项目推进方案</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="model-mode">DeepSeek 分析模式</label>
+              <select id="model-mode">
+                <option value="flash">DeepSeek V4 Flash · 低成本默认</option>
+                <option value="pro">DeepSeek V4 Pro · 高质量分析</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="api-key-input">DeepSeek API Key</label>
+              <input id="api-key-input" type="password" placeholder="sk-..." />
+            </div>
+
+            <div class="inline-options">
+              <label class="check-row">
+                <input id="remember-api-key" type="checkbox" />
+                <span>仅在本地保存 API Key</span>
+              </label>
+              <button class="button ghost compact-btn" id="clear-api-key-btn" type="button">清除 Key</button>
+            </div>
+
+            <div class="field-group">
+              <label for="document-input">粘贴行业材料</label>
+              <textarea id="document-input" spellcheck="false"></textarea>
+            </div>
+
+            <div class="quick-actions">
+              <button class="button primary" id="analyze-btn">开始分析</button>
+              <button class="button ghost" id="fill-demo">填充样例文本</button>
+              <button class="button ghost" id="save-draft-btn">保存草稿</button>
+              <button class="button ghost" id="restore-draft-btn">恢复草稿</button>
+              <button class="button ghost" id="clear-btn">清空</button>
+            </div>
+
+            <div class="upload-hint">
+              已接入 DeepSeek 调用入口。若未填写 API Key，页面会自动回退到本地演示分析模式。
+            </div>
+          </section>
+
+          <section class="output-panel">
+            <div class="panel-toolbar panel-toolbar-tight">
+              <strong>输出结果</strong>
+              <div class="result-actions">
+                <button class="button ghost compact-btn" id="copy-current-btn">复制当前内容</button>
+                <button class="button ghost compact-btn" id="export-md-btn">导出 Markdown</button>
+              </div>
+            </div>
+
+            <div class="output-tabs">
+              <button class="tab is-active" data-tab="analysis">需求拆解</button>
+              <button class="tab" data-tab="prd">PRD 草稿</button>
+              <button class="tab" data-tab="brief">汇报提纲</button>
+              <button class="tab" data-tab="ops">指标与资源</button>
+            </div>
+
+            <div class="tab-panel is-active" id="tab-analysis">
+              <div class="summary-banner">
+                <div>
+                  <span>AI 结论</span>
+                  <strong id="summary-title">等待分析</strong>
+                </div>
+                <small id="summary-subtitle">自动提炼角色、痛点、功能与风险。</small>
+              </div>
+
+              <div class="model-hint" id="model-hint">
+                当前策略：默认使用 DeepSeek V4 Flash，适合需求拆解、PRD 初稿和汇报提纲生成。
+              </div>
+
+              <div class="card-grid" id="analysis-cards"></div>
+              <div class="evidence-panel" id="evidence-panel"></div>
+            </div>
+
+            <div class="tab-panel" id="tab-prd">
+              <div class="editable-sheet" id="prd-output" contenteditable="true"></div>
+            </div>
+
+            <div class="tab-panel" id="tab-brief">
+              <div class="editable-sheet" id="brief-output" contenteditable="true"></div>
+            </div>
+
+            <div class="tab-panel" id="tab-ops">
+              <div class="ops-grid">
+                <article class="ops-card">
+                  <span>北极星指标</span>
+                  <strong id="north-star">导出可用方案完成率</strong>
+                  <p>衡量从上传文档到形成可执行成果的闭环效率。</p>
+                </article>
+                <article class="ops-card">
+                  <span>核心业务指标</span>
+                  <ul id="metric-list"></ul>
+                </article>
+                <article class="ops-card">
+                  <span>资源计划</span>
+                  <ul id="resource-list"></ul>
+                </article>
+                <article class="ops-card">
+                  <span>模型选型</span>
+                  <ul id="model-list"></ul>
+                </article>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
