@@ -3,178 +3,149 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>王晨曦 | AI 产品作品集</title>
+  <title>王晨曦 | Portfolio</title>
   <meta
     name="description"
-    content="王晨曦的 AI 产品作品集，展示行业文档理解与方案生成助手、数学题错题诊断助手两个产品型作品。"
+    content="王晨曦的作品集首页。以烟雨江南式的淡雅绿色为基调，展示 AI 产品与交互作品。"
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="./portfolio.css" />
 </head>
 <body>
-  <div class="page-bg" aria-hidden="true">
-    <div class="bg-image bg-left"></div>
-    <div class="bg-image bg-right"></div>
-    <div class="bg-glow glow-one"></div>
-    <div class="bg-glow glow-two"></div>
-  </div>
+  <div class="page-grain" aria-hidden="true"></div>
+  <div class="page-haze" aria-hidden="true"></div>
+  <div class="custom-cursor" id="cursor" aria-hidden="true"></div>
 
-  <div class="site-shell">
-    <nav class="topbar">
-      <div class="brand">
-        <div class="brand-mark">W</div>
-        <div>
-          <strong>王晨曦</strong>
-          <span>AI Product Portfolio</span>
-        </div>
-      </div>
-      <div class="topnav">
-        <a href="#projects">作品</a>
-        <a href="#about">能力</a>
-        <a href="#contact">联系</a>
-      </div>
-    </nav>
+  <main class="hero-page">
+    <header class="topbar">
+      <a class="brand" href="./index.html" data-cursor-hover>
+        <span class="brand-cn">王晨曦</span>
+        <span class="brand-en">wangchenxi studio</span>
+      </a>
 
-    <header class="hero">
-      <section class="hero-panel">
-        <div class="hero-copy">
-          <p class="eyebrow">Portfolio</p>
-          <h1>AI 产品作品集</h1>
-          <p class="hero-summary">
-            聚焦行业场景与教育场景，用网页形式展示产品思路、交互结构、
-            功能拆解与最小可行原型。
-          </p>
-
-          <div class="hero-actions">
-            <a class="button primary" href="#projects">查看作品</a>
-            <a class="button secondary" href="./reqpilot-mvp/index.html">查看行业文档助手</a>
-          </div>
-        </div>
-
-        <div class="hero-stage">
-          <div class="floating-card main-card">
-            <span>作品方向</span>
-            <strong>行业产品场景 × 教育场景</strong>
-            <p>强调产品逻辑、页面表达与 AI 能力落地。</p>
-          </div>
-          <div class="floating-card side-card">
-            <span>研究方向</span>
-            <strong>大模型安全 / 智能体安全 / 计算机视觉</strong>
-          </div>
-        </div>
-      </section>
+      <nav class="topnav" aria-label="Primary">
+        <a href="./index.html" data-cursor-hover>Index</a>
+        <a href="./reqpilot-mvp/index.html" data-cursor-hover>Projects</a>
+        <button
+          type="button"
+          class="nav-contact"
+          data-copy="cxwang396@163.com"
+          data-cursor-hover
+        >
+          Contact
+        </button>
+      </nav>
     </header>
 
-    <main>
-      <section id="projects" class="projects">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">Works</p>
-            <h2>作品展示</h2>
+    <section class="hero-stage" aria-label="Portfolio hero scene">
+      <div class="mist-layer mist-back" data-depth="slow" aria-hidden="true"></div>
+      <div class="mist-layer mist-front" data-depth="mid" aria-hidden="true"></div>
+      <div class="light-shaft shaft-one" data-depth="slow" aria-hidden="true"></div>
+      <div class="light-shaft shaft-two" data-depth="mid" aria-hidden="true"></div>
+
+      <div class="scene-orbit" id="sceneOrbit">
+        <div class="scene-depth" data-depth="deep">
+          <div class="branch branch-left" aria-hidden="true"></div>
+          <div class="branch branch-right" aria-hidden="true"></div>
+
+          <div class="wall wall-left">
+            <div class="opening arch arch-large"></div>
+            <div class="opening slit slit-left"></div>
+            <div class="opening arch arch-mid"></div>
           </div>
-          <p>两个作品分别对应行业场景和教育场景。</p>
-        </div>
 
-        <div class="project-row">
-          <article class="project-card featured">
-            <div class="project-copy">
-              <p class="project-kicker">Project 01</p>
-              <h3>行业文档理解与方案生成助手</h3>
-              <p>
-                面向公安、消防、政企等材料密集型场景，把非结构化文档整理为需求拆解、
-                PRD 草稿、汇报提纲与资源计划。这个作品更偏 AI 产品经理视角，
-                强调如何把模型能力包装成一套可演示、可讲述、可延展的产品工作台。
-              </p>
-              <ul class="project-list">
-                <li>目标用户：产品经理、售前顾问、项目协同角色</li>
-                <li>功能结构：材料输入、需求分析、PRD 输出、汇报导出</li>
-                <li>展示重点：多页面结构、工作台交互、模型切换与 API 接入预留</li>
-              </ul>
-              <div class="tag-row">
-                <span>AI Product</span>
-                <span>DeepSeek</span>
-                <span>PRD Workflow</span>
-                <span>Interactive MVP</span>
-              </div>
-              <div class="project-actions">
-                <a class="button primary" href="./reqpilot-mvp/index.html">查看项目</a>
-                <a class="button secondary" href="./reqpilot-mvp/workspace.html">进入演示页</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-card compact">
-            <div class="project-copy">
-              <p class="project-kicker">Project 02</p>
-              <h3>数学题错题诊断助手</h3>
-              <p>
-                面向初中数学学习场景的错题复盘网页，通过题目、解题过程和答案输入，
-                提供错因定位、知识点讲解、复习建议与同类练习，强调诊断式反馈。
-              </p>
-              <ul class="project-list">
-                <li>目标用户：初中生、家长、辅导场景</li>
-                <li>功能结构：错因分析、复习路径、练习反馈、错题记录</li>
-                <li>展示重点：教育产品语言、用户陪伴感和学习闭环设计</li>
-              </ul>
-              <div class="tag-row">
-                <span>EdTech</span>
-                <span>Learning Feedback</span>
-                <span>Static Demo</span>
-                <span>User Journey</span>
-              </div>
-              <div class="project-actions">
-                <a class="button primary" href="./math-ai-diagnosis-mvp/index.html">打开作品</a>
-                <a class="button secondary" href="./math-ai-diagnosis-mvp/README.md">项目说明</a>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="about" class="about-panel">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">About</p>
-            <h2>个人方向</h2>
+          <div class="wall wall-right">
+            <div class="opening slit slit-tall"></div>
+            <div class="opening slit slit-right"></div>
           </div>
-        </div>
 
-        <div class="about-row">
-          <article class="about-card">
-            <strong>产品兴趣</strong>
-            <p>关注 AI 产品规划、行业场景落地、文档与工作流类产品表达。</p>
-          </article>
-          <article class="about-card">
-            <strong>技术理解</strong>
-            <p>熟悉大模型调用流程、模型选型思路、Agent 与工作流基础能力。</p>
-          </article>
-          <article class="about-card">
-            <strong>协同经验</strong>
-            <p>有研究生部助理、代课老师与竞赛负责人经历，擅长需求对接与任务推进。</p>
-          </article>
-        </div>
-      </section>
+          <div class="platform">
+            <div class="stairs" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="pearl-sphere" data-depth="float" aria-hidden="true"></div>
+          </div>
 
-      <section id="contact" class="contact-band">
-        <div>
-          <p class="section-kicker">Contact</p>
-          <h2>联系方式</h2>
-          <p>适合作为 GitHub Pages 首页入口，用来承接作品展示和简历投递。</p>
+          <div class="stone stone-left" data-depth="mid" aria-hidden="true"></div>
+          <div class="stone stone-right" data-depth="float" aria-hidden="true"></div>
+          <div class="stone stone-far" data-depth="slow" aria-hidden="true"></div>
         </div>
-        <div class="contact-actions">
-          <button class="button primary copy-btn" data-copy="cxwang396@163.com">复制邮箱</button>
-          <button class="button secondary copy-btn" data-copy="18812763509">复制电话</button>
-        </div>
-      </section>
-    </main>
-  </div>
+      </div>
 
-  <div class="toast" id="toast"></div>
+      <div class="water-shell" id="waterShell" aria-hidden="true">
+        <div class="water-haze"></div>
+        <canvas class="water-canvas" id="waterCanvas"></canvas>
+      </div>
+
+      <div class="hero-copy" data-depth="slow">
+        <p class="scene-kicker">Misty Jiangnan</p>
+        <h1>江南的雾，落进一页静水之中。</h1>
+        <p>
+          我把作品集首页收成一幕安静的空间叙事，用低饱和鼠尾草绿、柔雾水面和克制交互，
+          让 AI 产品作品先以气质开场，再引向具体项目。
+        </p>
+      </div>
+
+      <a
+        class="cta-pill"
+        href="./reqpilot-mvp/index.html"
+        data-cursor-hover
+      >
+        <span>View our work ↘</span>
+      </a>
+
+      <div class="bottom-left">
+        <a
+          class="icon-chip"
+          href="./math-ai-diagnosis-mvp/index.html"
+          aria-label="Open wrapped project"
+          data-cursor-hover
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 18V8" />
+            <path d="M9 18V5" />
+            <path d="M14 18V11" />
+            <path d="M19 18V7" />
+          </svg>
+        </a>
+        <a
+          class="wrapped-pill"
+          href="./math-ai-diagnosis-mvp/index.html"
+          data-cursor-hover
+        >
+          Our 2026 Wrapped
+        </a>
+      </div>
+
+      <button
+        type="button"
+        class="globe-chip"
+        id="globeButton"
+        aria-label="Open global note"
+        data-cursor-hover
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M3.5 12h17"></path>
+          <path d="M12 3c2.8 2.4 4.2 5.4 4.2 9S14.8 18.6 12 21"></path>
+          <path d="M12 3C9.2 5.4 7.8 8.4 7.8 12s1.4 6.6 4.2 9"></path>
+        </svg>
+      </button>
+
+      <div class="copyright">©2026</div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="./portfolio.js"></script>
 </body>
 </html>
