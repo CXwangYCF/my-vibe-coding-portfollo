@@ -3,97 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>王晨曦 | Portfolio</title>
+  <title>王晨曦 | Rain Portfolio</title>
   <meta
     name="description"
-    content="王晨曦的作品集首页。以烟雨江南式的淡雅绿色为基调，展示 AI 产品与交互作品。"
+    content="王晨曦作品集首页，雨夜公车意象与手掌接雨交互场景。"
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="./portfolio.css" />
 </head>
 <body>
-  <div class="page-grain" aria-hidden="true"></div>
-  <div class="page-haze" aria-hidden="true"></div>
-  <div class="custom-cursor" id="cursor" aria-hidden="true"></div>
+  <div class="page-noise" aria-hidden="true"></div>
+  <div class="page-fog" aria-hidden="true"></div>
+
+  <div class="palm-cursor" id="palmCursor" aria-hidden="true">
+    <div class="palm-glow"></div>
+    <svg viewBox="0 0 140 180" class="palm-shape">
+      <path
+        d="M95 24c7 0 12 6 12 14v30c0 3 2 5 5 5s5-2 5-5V18c0-8 5-14 12-14 8 0 13 6 13 14v72c0 22-6 45-18 63-10 15-27 23-44 23-19 0-35-10-46-27-11-17-18-40-18-61 0-9 5-16 13-16 7 0 12 5 14 13l4 18c1 3 3 4 6 4 3 0 5-2 5-5V31c0-8 5-14 12-14s12 6 12 14v35c0 3 2 5 5 5s5-2 5-5V24c0-8 5-14 12-14 8 0 13 6 13 14v38c0 3 2 5 5 5s5-2 5-5V24c0-8 5-14 12-14Z"
+      />
+    </svg>
+  </div>
 
   <main class="hero-page">
-    <header class="topbar">
-      <a class="brand" href="./index.html" data-cursor-hover>
-        <span class="brand-cn">王晨曦</span>
-        <span class="brand-en">wangchenxi studio</span>
-      </a>
+    <div class="scene-shell" id="sceneShell">
+      <div class="scene-backdrop" id="sceneBackdrop" aria-hidden="true"></div>
+      <div class="scene-overlay" aria-hidden="true"></div>
+      <div class="depth-haze haze-left" data-depth="slow" aria-hidden="true"></div>
+      <div class="depth-haze haze-center" data-depth="mid" aria-hidden="true"></div>
+      <div class="depth-haze haze-right" data-depth="float" aria-hidden="true"></div>
+      <div class="depth-shaft shaft-left" data-depth="slow" aria-hidden="true"></div>
+      <div class="depth-shaft shaft-right" data-depth="mid" aria-hidden="true"></div>
+      <div class="bus-glow" data-depth="mid" aria-hidden="true"></div>
 
-      <nav class="topnav" aria-label="Primary">
-        <a href="./index.html" data-cursor-hover>Index</a>
-        <a href="./reqpilot-mvp/index.html" data-cursor-hover>Projects</a>
-        <button
-          type="button"
-          class="nav-contact"
-          data-copy="cxwang396@163.com"
-          data-cursor-hover
-        >
-          Contact
-        </button>
-      </nav>
-    </header>
-
-    <section class="hero-stage" aria-label="Portfolio hero scene">
-      <div class="mist-layer mist-back" data-depth="slow" aria-hidden="true"></div>
-      <div class="mist-layer mist-front" data-depth="mid" aria-hidden="true"></div>
-      <div class="light-shaft shaft-one" data-depth="slow" aria-hidden="true"></div>
-      <div class="light-shaft shaft-two" data-depth="mid" aria-hidden="true"></div>
-
-      <div class="scene-orbit" id="sceneOrbit">
-        <div class="scene-depth" data-depth="deep">
-          <div class="branch branch-left" aria-hidden="true"></div>
-          <div class="branch branch-right" aria-hidden="true"></div>
-
-          <div class="wall wall-left">
-            <div class="opening arch arch-large"></div>
-            <div class="opening slit slit-left"></div>
-            <div class="opening arch arch-mid"></div>
-          </div>
-
-          <div class="wall wall-right">
-            <div class="opening slit slit-tall"></div>
-            <div class="opening slit slit-right"></div>
-          </div>
-
-          <div class="platform">
-            <div class="stairs" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="pearl-sphere" data-depth="float" aria-hidden="true"></div>
-          </div>
-
-          <div class="stone stone-left" data-depth="mid" aria-hidden="true"></div>
-          <div class="stone stone-right" data-depth="float" aria-hidden="true"></div>
-          <div class="stone stone-far" data-depth="slow" aria-hidden="true"></div>
-        </div>
-      </div>
-
+      <canvas class="rain-canvas" id="rainCanvas" aria-hidden="true"></canvas>
       <div class="water-shell" id="waterShell" aria-hidden="true">
-        <div class="water-haze"></div>
         <canvas class="water-canvas" id="waterCanvas"></canvas>
       </div>
 
-      <div class="hero-copy" data-depth="slow">
-        <p class="scene-kicker">Misty Jiangnan</p>
-        <h1>江南的雾，落进一页静水之中。</h1>
-        <p>
-          我把作品集首页收成一幕安静的空间叙事，用低饱和鼠尾草绿、柔雾水面和克制交互，
-          让 AI 产品作品先以气质开场，再引向具体项目。
+      <header class="topbar">
+        <a class="brand" href="./index.html" data-cursor-hover>
+          <span class="brand-cn">王晨曦</span>
+          <span class="brand-en">Rain-held Portfolio</span>
+        </a>
+
+        <nav class="topnav" aria-label="Primary">
+          <a href="./index.html" data-cursor-hover>Index</a>
+          <a href="./reqpilot-mvp/index.html" data-cursor-hover>Projects</a>
+          <button
+            type="button"
+            class="nav-contact"
+            data-copy="cxwang396@163.com"
+            data-cursor-hover
+          >
+            Contact
+          </button>
+        </nav>
+      </header>
+
+      <section class="hero-copy" data-depth="slow">
+        <p class="eyebrow">Rain Interaction</p>
+        <h1>把雨接住，让静水替你回声。</h1>
+        <p class="hero-text">
+          背景换成雨夜公车后，我把首页交互升级成“手掌接雨”。细雨会被掌心轻轻吸附，
+          没接住的部分落进水面，留下克制而层次分明的涟漪。
         </p>
-      </div>
+      </section>
 
       <a
         class="cta-pill"
@@ -142,7 +121,7 @@
       </button>
 
       <div class="copyright">©2026</div>
-    </section>
+    </div>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
