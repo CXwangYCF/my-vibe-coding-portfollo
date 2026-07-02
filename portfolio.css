@@ -39,6 +39,10 @@ body {
     linear-gradient(180deg, #50654f 0%, #233026 56%, #131a15 100%);
   color: var(--ink);
   font-family: "Manrope", "PingFang SC", "Microsoft YaHei", sans-serif;
+  cursor: auto;
+}
+
+body.use-custom-cursor {
   cursor: none;
 }
 

@@ -9,7 +9,8 @@ const rippleCanvas = document.getElementById("rippleCanvas");
 const nearRainCanvas = document.getElementById("nearRainCanvas");
 const globeButton = document.getElementById("globeButton");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+const hasFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const isTouchDevice = !hasFinePointer;
 
 const midCtx = midRainCanvas ? midRainCanvas.getContext("2d") : null;
 const rippleCtx = rippleCanvas ? rippleCanvas.getContext("2d") : null;
@@ -345,6 +346,10 @@ if (globeButton) {
   globeButton.addEventListener("click", () => {
     showToast("Rain mode is live.");
   });
+}
+
+if (hasFinePointer) {
+  body.classList.add("use-custom-cursor");
 }
 
 if (isTouchDevice) {
