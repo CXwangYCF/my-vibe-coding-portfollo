@@ -3,31 +3,34 @@ const toast = document.getElementById("toast");
 const palmCursor = document.getElementById("palmCursor");
 const sceneShell = document.getElementById("sceneShell");
 const sceneBackdrop = document.getElementById("sceneBackdrop");
-const rainCanvas = document.getElementById("rainCanvas");
-const waterCanvas = document.getElementById("waterCanvas");
-const waterShell = document.getElementById("waterShell");
+const farRainCanvas = document.getElementById("farRainCanvas");
+const midRainCanvas = document.getElementById("midRainCanvas");
+const rippleCanvas = document.getElementById("rippleCanvas");
+const nearRainCanvas = document.getElementById("nearRainCanvas");
 const globeButton = document.getElementById("globeButton");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
-const rainCtx = rainCanvas ? rainCanvas.getContext("2d") : null;
-const waterCtx = waterCanvas ? waterCanvas.getContext("2d") : null;
+const midCtx = midRainCanvas ? midRainCanvas.getContext("2d") : null;
+const rippleCtx = rippleCanvas ? rippleCanvas.getContext("2d") : null;
+const depthElements = Array.from(document.querySelectorAll("[data-depth]"));
 
 const state = {
-  pointer: { x: window.innerWidth * 0.54, y: window.innerHeight * 0.48 },
-  target: { x: window.innerWidth * 0.54, y: window.innerHeight * 0.48 },
-  palmScale: 1,
-  palmTargetScale: 1,
+  target: { x: window.innerWidth * 0.3, y: window.innerHeight * 0.72 },
+  pointer: { x: window.innerWidth * 0.3, y: window.innerHeight * 0.72 },
+  ringScale: 1,
+  ringTargetScale: 1,
   parallaxX: 0,
   parallaxY: 0,
   targetParallaxX: 0,
   targetParallaxY: 0,
-  drops: [],
-  splashes: [],
-  ripples: [],
-  lastTouchSplashAt: 0,
-  waterTop: 0,
   sceneRect: null,
+  sceneWidth: 0,
+  sceneHeight: 0,
+  reflectionStart: 0,
+  rainDrops: [],
+  groundRipples: [],
+  cursorRipples: [],
 };
 
 function lerp(start, end, amount) {
@@ -36,6 +39,10 @@ function lerp(start, end, amount) {
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
+}
+
+function randomBetween(min, max) {
+  return min + Math.random() * (max - min);
 }
 
 function showToast(message) {
@@ -52,330 +59,258 @@ function getSceneRect() {
   return sceneShell ? sceneShell.getBoundingClientRect() : null;
 }
 
-function getPalmHitPoint() {
-  const rect = state.sceneRect || getSceneRect();
-  if (!rect) {
-    return { x: state.pointer.x, y: state.pointer.y, radiusX: 28, radiusY: 34 };
-  }
+function resizeCanvas(canvas, ctx, width, height, dpr) {
+  if (!canvas || !ctx) return;
+  canvas.width = Math.max(1, Math.floor(width * dpr));
+  canvas.height = Math.max(1, Math.floor(height * dpr));
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
 
-  const x = state.pointer.x - rect.left + 20;
-  const y = state.pointer.y - rect.top + 30;
+function createDrop(spawnAbove = false) {
+  const width = state.sceneWidth;
+  const height = state.sceneHeight;
   return {
-    x,
-    y,
-    radiusX: 28 * state.palmScale,
-    radiusY: 34 * state.palmScale,
+    x: randomBetween(-12, width + 12),
+    y: spawnAbove ? randomBetween(-height * 0.35, -16) : randomBetween(-height * 0.08, height),
+    speed: randomBetween(4.4, 7),
+    drift: randomBetween(-0.22, 0.18),
+    length: randomBetween(10, 18),
+    alpha: randomBetween(0.07, 0.17),
+    lineWidth: randomBetween(0.55, 0.95),
+    vx: 0,
+    vy: 0,
+    swaySeed: Math.random() * Math.PI * 2,
   };
 }
 
-function resizeCanvases() {
+function seedRain() {
+  const count = isTouchDevice ? 34 : 58;
+  state.rainDrops = Array.from({ length: count }, (_, index) => createDrop(index > count * 0.45));
+}
+
+function respawnDrop(drop) {
+  Object.assign(drop, createDrop(true));
+}
+
+function addGroundRipple(x, y, energy = 1) {
+  if (y < state.reflectionStart) return;
+
+  state.groundRipples.push({
+    x,
+    y,
+    energy,
+    life: 0,
+  });
+
+  if (state.groundRipples.length > 24) {
+    state.groundRipples.shift();
+  }
+}
+
+function addCursorRipple(x, y, energy = 1) {
+  state.cursorRipples.push({
+    x,
+    y,
+    energy,
+    life: 0,
+  });
+
+  if (state.cursorRipples.length > 16) {
+    state.cursorRipples.shift();
+  }
+}
+
+function getCursorField() {
+  const rect = state.sceneRect || getSceneRect();
+  if (!rect) {
+    return {
+      x: state.target.x,
+      y: state.target.y,
+      radius: 20 * state.ringScale,
+      influence: 74 * state.ringScale,
+    };
+  }
+
+  return {
+    x: state.target.x - rect.left,
+    y: state.target.y - rect.top,
+    radius: 20 * state.ringScale,
+    influence: 74 * state.ringScale,
+  };
+}
+
+function resizeScene() {
   state.sceneRect = getSceneRect();
   if (!state.sceneRect) return;
 
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   const { width, height } = state.sceneRect;
+  state.sceneWidth = width;
+  state.sceneHeight = height;
+  state.reflectionStart = height * 0.67;
 
-  if (rainCtx && rainCanvas) {
-    rainCanvas.width = Math.max(1, Math.floor(width * dpr));
-    rainCanvas.height = Math.max(1, Math.floor(height * dpr));
-    rainCanvas.style.width = `${width}px`;
-    rainCanvas.style.height = `${height}px`;
-    rainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  resizeCanvas(midRainCanvas, midCtx, width, height, dpr);
+  resizeCanvas(rippleCanvas, rippleCtx, width, height, dpr);
+
+  if (farRainCanvas) {
+    farRainCanvas.width = 1;
+    farRainCanvas.height = 1;
   }
 
-  if (waterCtx && waterCanvas && waterShell) {
-    const waterRect = waterShell.getBoundingClientRect();
-    waterCanvas.width = Math.max(1, Math.floor(waterRect.width * dpr));
-    waterCanvas.height = Math.max(1, Math.floor(waterRect.height * dpr));
-    waterCanvas.style.width = `${waterRect.width}px`;
-    waterCanvas.style.height = `${waterRect.height}px`;
-    waterCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    state.waterTop = waterRect.top - state.sceneRect.top;
+  if (nearRainCanvas) {
+    nearRainCanvas.width = 1;
+    nearRainCanvas.height = 1;
   }
 
-  seedDrops();
+  seedRain();
 }
 
-function createDrop(spawnTop = false) {
-  if (!state.sceneRect) return null;
-  const { width, height } = state.sceneRect;
-  return {
-    x: Math.random() * width,
-    y: spawnTop ? Math.random() * -height * 0.2 : Math.random() * height,
-    z: Math.random(),
-    speed: 10 + Math.random() * 10,
-    drift: -0.6 + Math.random() * 1.2,
-    length: 10 + Math.random() * 16,
-    alpha: 0.18 + Math.random() * 0.22,
-    vx: 0,
-    vy: 0,
-    captured: false,
-  };
-}
-
-function seedDrops() {
-  if (!state.sceneRect) return;
-  const dropCount = isTouchDevice ? 130 : 190;
-  state.drops = Array.from({ length: dropCount }, (_, index) => createDrop(index > dropCount * 0.5));
-}
-
-function respawnDrop(drop) {
-  if (!state.sceneRect) return;
-  const next = createDrop(true);
-  Object.assign(drop, next);
-}
-
-function addRipple(x, y, energy = 1, fromPalm = false) {
-  if (!state.sceneRect) return;
-  if (y < state.waterTop - 6) return;
-
-  state.ripples.push({
-    x,
-    y: y - state.waterTop,
-    life: 0,
-    energy,
-    fromPalm,
-  });
-
-  if (state.ripples.length > 24) {
-    state.ripples.shift();
-  }
-}
-
-function addPalmSplash(x, y) {
-  const now = performance.now();
-  if (now - state.lastTouchSplashAt < 28) return;
-  state.lastTouchSplashAt = now;
-
-  for (let i = 0; i < 6; i += 1) {
-    state.splashes.push({
-      x,
-      y,
-      vx: (Math.random() - 0.5) * 1.6,
-      vy: -1.4 - Math.random() * 1.2,
-      life: 0,
-      alpha: 0.34 + Math.random() * 0.18,
-      size: 1.2 + Math.random() * 1.8,
-    });
-  }
-
-  if (state.splashes.length > 120) {
-    state.splashes.splice(0, state.splashes.length - 120);
-  }
-}
-
-function drawRain(time) {
-  if (!rainCtx || !rainCanvas || !state.sceneRect) return;
-  const width = rainCanvas.clientWidth;
-  const height = rainCanvas.clientHeight;
-  rainCtx.clearRect(0, 0, width, height);
-
-  const palm = getPalmHitPoint();
-
-  for (const drop of state.drops) {
-    const dx = palm.x - drop.x;
-    const dy = palm.y - drop.y;
-    const nearPalm =
-      dy > -70 &&
-      dy < 110 &&
-      Math.abs(dx) < 90;
-
-    if (nearPalm && !isTouchDevice) {
-      const attract = clamp(1 - Math.hypot(dx * 0.9, dy * 0.7) / 92, 0, 1);
-      if (attract > 0) {
-        drop.vx = lerp(drop.vx, dx * 0.016, 0.2);
-        drop.vy = lerp(drop.vy, dy * 0.022, 0.22);
-      }
-
-      if (
-        Math.abs(dx) < palm.radiusX &&
-        Math.abs(dy) < palm.radiusY
-      ) {
-        addPalmSplash(palm.x, palm.y);
-        respawnDrop(drop);
-        continue;
-      }
-    } else {
-      drop.vx *= 0.92;
-      drop.vy *= 0.88;
-    }
-
-    drop.x += drop.drift + drop.vx;
-    drop.y += drop.speed + drop.vy;
-
-    const tailX = drop.x - 2.4;
-    const tailY = drop.y - drop.length;
-    const strokeAlpha = drop.alpha * (0.7 + drop.z * 0.6);
-    rainCtx.strokeStyle = `rgba(233, 245, 236, ${strokeAlpha.toFixed(3)})`;
-    rainCtx.lineWidth = 0.6 + drop.z * 0.7;
-    rainCtx.beginPath();
-    rainCtx.moveTo(drop.x, drop.y);
-    rainCtx.lineTo(tailX, tailY);
-    rainCtx.stroke();
-
-    if (drop.y >= state.waterTop) {
-      addRipple(drop.x, drop.y, 0.5 + drop.z * 0.35, false);
-      respawnDrop(drop);
-      continue;
-    }
-
-    if (drop.y > height + 8 || drop.x < -18 || drop.x > width + 18) {
-      respawnDrop(drop);
-    }
-  }
-
-  for (const splash of state.splashes) {
-    splash.x += splash.vx;
-    splash.y += splash.vy;
-    splash.vy += 0.08;
-    splash.life += 0.03;
-
-    const alpha = Math.max(0, splash.alpha * (1 - splash.life));
-    rainCtx.fillStyle = `rgba(240, 248, 242, ${alpha.toFixed(3)})`;
-    rainCtx.beginPath();
-    rainCtx.arc(splash.x, splash.y, splash.size, 0, Math.PI * 2);
-    rainCtx.fill();
-  }
-
-  rainCtx.strokeStyle = "rgba(244, 249, 244, 0.06)";
-  rainCtx.lineWidth = 1;
-  for (let i = 0; i < 4; i += 1) {
-    const x = width * (0.18 + i * 0.18) + Math.sin(time * 0.4 + i) * 18;
-    rainCtx.beginPath();
-    rainCtx.moveTo(x, height * 0.14);
-    rainCtx.lineTo(x + 8, height * 0.62);
-    rainCtx.stroke();
-  }
-
-  state.splashes = state.splashes.filter((splash) => splash.life < 1);
-}
-
-function drawWater(time) {
-  if (!waterCtx || !waterCanvas) return;
-  const width = waterCanvas.clientWidth;
-  const height = waterCanvas.clientHeight;
-  waterCtx.clearRect(0, 0, width, height);
-
-  const base = waterCtx.createLinearGradient(0, 0, 0, height);
-  base.addColorStop(0, "rgba(220, 236, 219, 0.05)");
-  base.addColorStop(0.14, "rgba(168, 190, 164, 0.12)");
-  base.addColorStop(0.52, "rgba(76, 98, 77, 0.28)");
-  base.addColorStop(1, "rgba(10, 16, 12, 0.52)");
-  waterCtx.fillStyle = base;
-  waterCtx.fillRect(0, 0, width, height);
-
-  const bands = [
-    { x: 0.18, w: 0.11, alpha: 0.08 },
-    { x: 0.47, w: 0.07, alpha: 0.16 },
-    { x: 0.66, w: 0.06, alpha: 0.1 },
-    { x: 0.82, w: 0.05, alpha: 0.14 },
-  ];
-
-  for (const band of bands) {
-    const x = width * band.x + Math.sin(time * 0.65 + band.x * 10) * 6;
-    const w = width * band.w;
-    const grad = waterCtx.createLinearGradient(x, 0, x, height);
-    grad.addColorStop(0, `rgba(244, 248, 244, ${band.alpha})`);
-    grad.addColorStop(1, "rgba(244, 248, 244, 0)");
-    waterCtx.fillStyle = grad;
-    waterCtx.fillRect(x, 0, w, height);
-  }
-
-  for (let y = 8; y < height; y += 14) {
-    waterCtx.beginPath();
-    for (let x = 0; x <= width + 14; x += 16) {
-      let offset =
-        Math.sin(x * 0.028 + y * 0.035 + time * 1.22) * 1.8 +
-        Math.cos(x * 0.012 - time * 1.05 + y * 0.026) * 1.2;
-
-      for (const ripple of state.ripples) {
-        const dx = x - ripple.x;
-        const dy = y - ripple.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const decay = Math.exp(-distance / (ripple.fromPalm ? 120 : 90));
-        offset +=
-          Math.sin(distance * 0.14 - ripple.life * 10) *
-          decay *
-          ripple.energy *
-          (ripple.fromPalm ? 4.8 : 3.6);
-      }
-
-      if (x === 0) {
-        waterCtx.moveTo(x, y + offset);
-      } else {
-        waterCtx.lineTo(x, y + offset);
-      }
-    }
-
-    const alpha = 0.028 + (y / height) * 0.06;
-    waterCtx.strokeStyle = `rgba(233, 244, 235, ${alpha.toFixed(3)})`;
-    waterCtx.lineWidth = 1;
-    waterCtx.stroke();
-  }
-
-  state.ripples = state.ripples.filter((ripple) => ripple.life < 1.25);
-  for (const ripple of state.ripples) {
-    ripple.life += ripple.fromPalm ? 0.022 : 0.018;
-  }
-}
-
-function updateDepths(time) {
+function updateBackgroundParallax(time) {
   const vw = window.innerWidth || 1;
   const vh = window.innerHeight || 1;
 
   if (isTouchDevice || prefersReducedMotion) {
-    state.target.x = vw * (0.52 + Math.sin(time * 0.15) * 0.06);
-    state.target.y = vh * (0.44 + Math.cos(time * 0.17) * 0.04);
+    state.target.x = vw * (0.34 + Math.sin(time * 0.13) * 0.022);
+    state.target.y = vh * (0.7 + Math.cos(time * 0.15) * 0.018);
   }
 
-  const nx = state.target.x / vw - 0.5;
-  const ny = state.target.y / vh - 0.5;
-
-  state.targetParallaxX = nx;
-  state.targetParallaxY = ny;
-  state.parallaxX = lerp(state.parallaxX, state.targetParallaxX, prefersReducedMotion ? 0.05 : 0.08);
-  state.parallaxY = lerp(state.parallaxY, state.targetParallaxY, prefersReducedMotion ? 0.05 : 0.08);
+  state.targetParallaxX = state.target.x / vw - 0.5;
+  state.targetParallaxY = state.target.y / vh - 0.5;
+  state.parallaxX = lerp(state.parallaxX, state.targetParallaxX, prefersReducedMotion ? 0.08 : 0.12);
+  state.parallaxY = lerp(state.parallaxY, state.targetParallaxY, prefersReducedMotion ? 0.08 : 0.12);
 
   if (sceneBackdrop) {
-    const x = state.parallaxX * 26;
-    const y = state.parallaxY * 18;
-    const scale = isTouchDevice ? 1.06 : 1.08;
-    sceneBackdrop.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+    sceneBackdrop.style.transform =
+      `translate3d(${state.parallaxX * 20}px, ${state.parallaxY * 14}px, 0) scale(1.06)`;
   }
 
-  document.querySelectorAll("[data-depth]").forEach((element) => {
+  depthElements.forEach((element) => {
     const depth = element.getAttribute("data-depth");
-    const factorMap = {
-      slow: 0.5,
-      mid: 0.9,
-      float: 1.3,
-    };
-    const factor = factorMap[depth] || 0.6;
-    const moveX = state.parallaxX * factor * 24;
-    const moveY = state.parallaxY * factor * 16;
-    const driftY = depth === "float" ? Math.sin(time * 0.8 + factor) * 5 : 0;
-    element.style.transform = `translate3d(${moveX}px, ${moveY + driftY}px, 0)`;
+    const factor = depth === "float" ? 1.1 : depth === "mid" ? 0.72 : 0.42;
+    const driftY = depth === "float" ? Math.sin(time * 0.72 + factor) * 3 : 0;
+    element.style.transform =
+      `translate3d(${state.parallaxX * 18 * factor}px, ${state.parallaxY * 12 * factor + driftY}px, 0)`;
   });
 }
 
-function updatePalm() {
+function updateCursor() {
   if (!palmCursor || isTouchDevice) return;
 
-  state.pointer.x = lerp(state.pointer.x, state.target.x, prefersReducedMotion ? 0.14 : 0.2);
-  state.pointer.y = lerp(state.pointer.y, state.target.y, prefersReducedMotion ? 0.14 : 0.2);
-  state.palmScale = lerp(state.palmScale, state.palmTargetScale, prefersReducedMotion ? 0.12 : 0.16);
+  state.pointer.x = lerp(state.pointer.x, state.target.x, prefersReducedMotion ? 0.45 : 0.68);
+  state.pointer.y = lerp(state.pointer.y, state.target.y, prefersReducedMotion ? 0.45 : 0.68);
+  state.ringScale = lerp(state.ringScale, state.ringTargetScale, prefersReducedMotion ? 0.22 : 0.32);
 
-  const rotation = clamp((state.target.x - state.pointer.x) * 0.08, -10, 10);
   palmCursor.style.transform =
-    `translate3d(${state.pointer.x}px, ${state.pointer.y}px, 0) rotate(${rotation}deg) scale(${state.palmScale})`;
+    `translate3d(${state.pointer.x}px, ${state.pointer.y}px, 0) scale(${state.ringScale})`;
+}
+
+function drawRain(time) {
+  if (!midCtx) return;
+
+  const width = state.sceneWidth;
+  const height = state.sceneHeight;
+  const cursor = getCursorField();
+
+  midCtx.clearRect(0, 0, width, height);
+
+  for (const drop of state.rainDrops) {
+    const dx = cursor.x - drop.x;
+    const dy = cursor.y - drop.y;
+    const distance = Math.hypot(dx, dy);
+
+    drop.vx *= 0.88;
+    drop.vy *= 0.86;
+
+    if (!isTouchDevice && distance < cursor.influence) {
+      const force = clamp(1 - distance / cursor.influence, 0, 1);
+      const side = drop.x < cursor.x ? -1 : 1;
+
+      drop.vx += side * force * 0.28;
+      drop.vy -= force * 0.16;
+
+      if (distance < cursor.radius) {
+        addCursorRipple(drop.x, drop.y, 0.75 + force * 0.45);
+        respawnDrop(drop);
+        continue;
+      }
+    }
+
+    const sway = Math.sin(time * 1.1 + drop.swaySeed) * 0.05;
+    drop.x += drop.drift + sway + drop.vx;
+    drop.y += drop.speed + drop.vy;
+
+    midCtx.strokeStyle = `rgba(232, 245, 235, ${drop.alpha.toFixed(3)})`;
+    midCtx.lineWidth = drop.lineWidth;
+    midCtx.beginPath();
+    midCtx.moveTo(drop.x, drop.y);
+    midCtx.lineTo(drop.x - 1.2, drop.y - drop.length);
+    midCtx.stroke();
+
+    if (drop.y >= state.reflectionStart) {
+      addGroundRipple(drop.x, drop.y, 0.7);
+      respawnDrop(drop);
+      continue;
+    }
+
+    if (drop.y > height + 14 || drop.x < -18 || drop.x > width + 18) {
+      respawnDrop(drop);
+    }
+  }
+}
+
+function drawRipples(time) {
+  if (!rippleCtx) return;
+
+  const width = state.sceneWidth;
+  const height = state.sceneHeight;
+  rippleCtx.clearRect(0, 0, width, height);
+
+  for (const ripple of state.groundRipples) {
+    ripple.life += 0.024;
+    const alpha = Math.max(0, 0.14 * (1 - ripple.life));
+    const radius = 7 + ripple.life * 22 * ripple.energy;
+
+    rippleCtx.strokeStyle = `rgba(232, 243, 233, ${alpha.toFixed(3)})`;
+    rippleCtx.lineWidth = 0.75;
+    rippleCtx.beginPath();
+    rippleCtx.ellipse(ripple.x, ripple.y, radius, radius * 0.4, 0, 0, Math.PI * 2);
+    rippleCtx.stroke();
+  }
+
+  for (const ripple of state.cursorRipples) {
+    ripple.life += 0.05;
+    const alpha = Math.max(0, 0.12 * (1 - ripple.life));
+    const radius = 4 + ripple.life * 18 * ripple.energy;
+
+    rippleCtx.strokeStyle = `rgba(236, 247, 238, ${alpha.toFixed(3)})`;
+    rippleCtx.lineWidth = 0.7;
+    rippleCtx.beginPath();
+    rippleCtx.arc(ripple.x, ripple.y, radius, 0, Math.PI * 2);
+    rippleCtx.stroke();
+  }
+
+  state.groundRipples = state.groundRipples.filter((ripple) => ripple.life < 1);
+  state.cursorRipples = state.cursorRipples.filter((ripple) => ripple.life < 1);
+
+  rippleCtx.strokeStyle = "rgba(242, 248, 242, 0.028)";
+  rippleCtx.lineWidth = 1;
+  for (let i = 0; i < 3; i += 1) {
+    const x = width * (0.22 + i * 0.23) + Math.sin(time * 0.4 + i) * 10;
+    rippleCtx.beginPath();
+    rippleCtx.moveTo(x, height * 0.16);
+    rippleCtx.lineTo(x + 6, height * 0.56);
+    rippleCtx.stroke();
+  }
 }
 
 function animate(now) {
   const time = now * 0.001;
-  updatePalm();
-  updateDepths(time);
+  updateCursor();
+  updateBackgroundParallax(time);
   drawRain(time);
-  drawWater(time);
+  drawRipples(time);
   window.requestAnimationFrame(animate);
 }
 
@@ -386,10 +321,10 @@ window.addEventListener("pointermove", (event) => {
 
 document.querySelectorAll("[data-cursor-hover]").forEach((element) => {
   element.addEventListener("pointerenter", () => {
-    state.palmTargetScale = 1.12;
+    state.ringTargetScale = 1.12;
   });
   element.addEventListener("pointerleave", () => {
-    state.palmTargetScale = 1;
+    state.ringTargetScale = 1;
   });
 });
 
@@ -416,7 +351,7 @@ if (isTouchDevice) {
   body.classList.add("is-touch");
 }
 
-window.addEventListener("resize", resizeCanvases);
+window.addEventListener("resize", resizeScene);
 
-resizeCanvases();
+resizeScene();
 window.requestAnimationFrame(animate);

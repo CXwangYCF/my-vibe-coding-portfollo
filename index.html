@@ -6,7 +6,7 @@
   <title>王晨曦 | Rain Portfolio</title>
   <meta
     name="description"
-    content="王晨曦作品集首页，雨夜公车意象与手掌接雨交互场景。"
+    content="王晨曦作品集首页，保留绿色雨夜公车背景与玻璃拟态 UI，并以纤细女性手掌接雨作为核心交互。"
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,12 +21,7 @@
   <div class="page-fog" aria-hidden="true"></div>
 
   <div class="palm-cursor" id="palmCursor" aria-hidden="true">
-    <div class="palm-glow"></div>
-    <svg viewBox="0 0 140 180" class="palm-shape">
-      <path
-        d="M95 24c7 0 12 6 12 14v30c0 3 2 5 5 5s5-2 5-5V18c0-8 5-14 12-14 8 0 13 6 13 14v72c0 22-6 45-18 63-10 15-27 23-44 23-19 0-35-10-46-27-11-17-18-40-18-61 0-9 5-16 13-16 7 0 12 5 14 13l4 18c1 3 3 4 6 4 3 0 5-2 5-5V31c0-8 5-14 12-14s12 6 12 14v35c0 3 2 5 5 5s5-2 5-5V24c0-8 5-14 12-14 8 0 13 6 13 14v38c0 3 2 5 5 5s5-2 5-5V24c0-8 5-14 12-14Z"
-      />
-    </svg>
+    <div class="cursor-ring"></div>
   </div>
 
   <main class="hero-page">
@@ -40,9 +35,11 @@
       <div class="depth-shaft shaft-right" data-depth="mid" aria-hidden="true"></div>
       <div class="bus-glow" data-depth="mid" aria-hidden="true"></div>
 
-      <canvas class="rain-canvas" id="rainCanvas" aria-hidden="true"></canvas>
-      <div class="water-shell" id="waterShell" aria-hidden="true">
-        <canvas class="water-canvas" id="waterCanvas"></canvas>
+      <div class="effect-stack" aria-hidden="true">
+        <canvas class="effect-canvas effect-far" id="farRainCanvas"></canvas>
+        <canvas class="effect-canvas effect-mid" id="midRainCanvas"></canvas>
+        <canvas class="effect-canvas effect-ripple" id="rippleCanvas"></canvas>
+        <canvas class="effect-canvas effect-near" id="nearRainCanvas"></canvas>
       </div>
 
       <header class="topbar">
@@ -67,10 +64,9 @@
 
       <section class="hero-copy" data-depth="slow">
         <p class="eyebrow">Rain Interaction</p>
-        <h1>把雨接住，让静水替你回声。</h1>
+        <h1>Rain, light, and a quiet way of seeing.</h1>
         <p class="hero-text">
-          背景换成雨夜公车后，我把首页交互升级成“手掌接雨”。细雨会被掌心轻轻吸附，
-          没接住的部分落进水面，留下克制而层次分明的涟漪。
+          A quiet interaction between gesture, rain, and atmosphere.
         </p>
       </section>
 
